@@ -26,23 +26,22 @@ muse is designed to be a python-esque language but fast and safe
 
 ```
 
-# 2 ways to declare types
+# 2 ways to declare variables
 
-int a = 10
-b = 20
+a = 20
 
 string hello = "Hello World"
 
 # example of a declarative single line function defenition with strong typing 
 
-f(x: int, y: int) = (x^2) + y*(3-1) -> int
+f(x: int) = x^2 -> int
 
 # example of an imerative function defenition
 
-function(array)
-    return [i^2 for i in array if i%2==0]
+even(array)
+    return [i for i in array if i%2==0]
 
 # function call
 
-res = f(a, b)
+res = f(a)
 ```
