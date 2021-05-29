@@ -21,6 +21,9 @@ muse is designed to be a python-esque language but fast and safe
     - Parser [we are here]
     - Visitor
     - Integration with LLVM 
+    - optimization
+    - memory management
+    - standard library
 
 ### Syntax examples
 
