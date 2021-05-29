@@ -14,8 +14,13 @@ Planned features:
 - Safe memory management, no GC is palnned (something similar to rust)
 - runs on LLVM (maybe?)
 - Supports both JIT compilation and interpreting (working on compilation first)
-- concurrency
+- concurrency (something similar to go)
 
+# TODO:
+    - Lexer (basic implementation is already done)
+    - Parser [we are here]
+    - Visitor
+    - Integration with LLVM 
 
 Syntax examples
 
@@ -39,5 +44,5 @@ function(array)
 
 # function call
 
-print(f(a, b))
+res = f(a, b)
 ```
