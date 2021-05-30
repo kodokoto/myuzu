@@ -29,7 +29,7 @@ double_operators = {
     ">=" : "MORE_EQUAL",
     "+=" : "INCREMENT",
     "-=" : "DECREMENT",
-    "->" : "TYPE_INFER"
+    "->" : "RETURN_TYPE"
 }
 
 keywords = {
@@ -48,7 +48,8 @@ keywords = {
     "class"  : "CLASS",
     "int"    : "INT_DECL",
     "string" : "STR_DECL",
-    "bool"   : "BOOL_DECL"
+    "bool"   : "BOOL_DECL",
+    "float"  : "FLOAT_DECL"
 } 
 
 class Token:
