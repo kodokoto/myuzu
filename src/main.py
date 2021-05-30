@@ -1,5 +1,5 @@
 from lexer import Lexer
-from parser import Parser
+# from parser import Parser
 
 
 def main():
@@ -7,8 +7,8 @@ def main():
     content = ''
     with open('examples/hello_world.mu', 'r') as file:
         content = file.read()
-
     lexer = Lexer(content)
-    parser = Parser(lexer)
+    # parser = Parser(lexer)
+    print(lexer.init_lex())
 
 main()

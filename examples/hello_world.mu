@@ -1,8 +1,6 @@
-int x = 10
-int y = 20
+function(x + y)
+    return x + y
 
-string hello = "Hello World"
+function(x : int) = x^2 -> int
 
-function(x: int, y: int) = (x^2) + y*(3-1) -> int
 
-print(function(x, y))
