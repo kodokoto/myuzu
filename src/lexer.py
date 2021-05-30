@@ -11,6 +11,7 @@ single_operators = {
     '*' : "MULT",
     '/' : "DIV",
     '^' : "EXPO",
+    '%' : "MODULO",
     '(' : "RPAREN",
     ')' : "LPAREN",
     '[' : "RSQUARE",
@@ -51,20 +52,31 @@ keywords = {
 } 
 
 class Token:
-    def __init__(self, type_, value):
+    def __init__(self, type_, value, val_type=None):
         self.type = type_
         self.value = value
+        self.val_type =val_type
 
     def __repr__(self) -> str:
-        return f"\n{self.type} : {self.value}"
+        return f"{self.type} : {self.value}"
 
 class Lexer:
-    def __init__(self, line):
-        self.line = line
-        self.cursor = 0
-        self.charachter = self.line[self.cursor]
+    def __init__(self, content):
+        self.content = content
+        
 
+    def init_lex(self):
+        self.lines = self.content.split("\n")
 
+        self.separate_lines = [line for line in self.lines if line != ""]
+        self.all_tokens = []
+        # self.line_count = 0
+        tmp_lvl = 0
+        # while self.line_count < len(self.separate_lines)-1:
+        for i in self.separate_lines:
+            tmp_tok, tmp_lvl  = self.tokenize(i, tmp_lvl)
+            self.all_tokens.append(tmp_tok)
+        return [item for sublist in self.all_tokens for item in sublist if item.type!="COMMENT"]
     def advance(self):
         if self.cursor < len(self.line)-1:
             self.cursor+=1
@@ -103,11 +115,25 @@ class Lexer:
                 break
         return Token("STRING", value)
 
-    def tokenize(self):
+    def tokenize(self, line, level):
+        self.line = line.replace('    ', '\t')
+        self.cursor = 0
+        self.charachter = self.line[self.cursor]
+        self.level = level
         self.tokens = []
         while self.cursor < len(self.line):
             # Token IDs & Keywords
-            if self.charachter.isalpha():
+            if self.charachter == '#':
+                return [Token("COMMENT", "useless")], level
+            elif level<self.line.count('\t'):
+                self.tokens.append(Token("INDENT", '\t'))
+                level += 1
+                self.advance()
+            elif level>self.line.count('\t'):
+                self.tokens.append(Token("DEDENT", '\t'))
+                level-=1
+                self.advance()
+            elif self.charachter.isalpha():
                 self.tokens.append(self.collect_id())
             # Numbers
             elif self.charachter.isnumeric():
@@ -125,14 +151,9 @@ class Lexer:
                 self.tokens.append(Token(single_operators[self.charachter], self.charachter))
                 self.advance()
             else: self.advance()
-        return self.tokens
-            
-
-            
-lexer = Lexer(example)
-
-print(lexer.tokenize())
-
+        self.tokens.append(Token("EOF", ""))
+        return self.tokens, level
+    
 
 
 
