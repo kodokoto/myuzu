@@ -59,7 +59,7 @@ class Token:
         self.val_type =val_type
 
     def __repr__(self) -> str:
-        return f"{self.type} : {self.value}"
+        return f"\n{self.type}"
 
 class Lexer:
     def __init__(self, content):
@@ -152,7 +152,7 @@ class Lexer:
                 self.tokens.append(Token(single_operators[self.charachter], self.charachter))
                 self.advance()
             else: self.advance()
-        self.tokens.append(Token("EOF", ""))
+        self.tokens.append(Token("EOL", ""))
         return self.tokens, level
     
 
