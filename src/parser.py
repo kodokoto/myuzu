@@ -58,10 +58,37 @@ class Parser:
         self.index = 0
         self.current_token = self.tokens[index]
         self.type_tokens = ["INT_DECL", "STR_DECL", "BOOL_DECL", "FLOAT_DECL"]
+        self.op_tokens = {
+    ':' : "COLON",
+    ',' : "COMMA",
+    '.' : "PERIOD",
+    '=' : "EQUALS",
+    '+' : "PLUS",
+    '-' : "MINUS",
+    '*' : "MULT",
+    '/' : "DIV",
+    '^' : "EXPO",
+    '%' : "MODULO",
+    '(' : "RPAREN",
+    ')' : "LPAREN",
+    '[' : "RSQUARE",
+    ']' : "LSQUARE",
+    '{' : "RCURLY",
+    '}' : "LCURLY",
+    '<' : "LESS_THAN",
+    '>' : "MORE_THAN",
+    "==" : "EQUAL_EQUAL",
+    "!=" : "BANG_EQUAL",
+    "<=" : "LESS_EQUAL",
+    ">=" : "MORE_EQUAL",
+    "+=" : "INCREMENT",
+    "-=" : "DECREMENT",
+}
+    }
 
     def parse(self):
         if current_token.type == "TOKEN_ID" and self.tokens[self.index+1].type == "LPAREN":
-            if self.func_lookahead(self.index):
+            if self.check_if_func_decl(self.index):
                 return self.func_def()
             else: return self.func_call()
                
@@ -90,15 +117,22 @@ class Parser:
         # While we are inbetween the brackets
         while self.current_token.type != "RPAREN":
             # If we have TOKEN_ID followed by COLON then we know there is a type decleration
-            if self.current_token.type == "TOKEN_ID" and self.tokens[self.index+1] == "COLON":
+            if self.current_token.type == "TOKEN_ID" and self.tokens[self.index+1] in self.type_tokens:
                 arguments.append(self.current_token.type)
                 # if that the token following the COLON is a valis type decleration, store the type, else return an error
-                argument_types.append(self.tokens[self.index+2].value) if self.tokens[self.index+2].type in self.type_tokens else raise ParseError(f"Expected Type Decleration token, instead got: {self.tokens[self.index+2].type}")
-                self.next_token()
+                argument_types.append(self.tokens[self.index+1].value) if self.tokens[self.index+2].type in self.type_tokens else raise ParseError(f"Expected Type Decleration token, instead got: {self.tokens[self.index+2].type}")
                 self.next_token()
                 self.next_token()
                 self.check_token("COMMA") # make sure there is a comma separating the arguments
-            # if there is no COLON token after the TOKEN_ID, there is no type decleration    
+            # if there is no COLON token after the TOKEN_ID, there is no type decleration
+            elif self.current_token in self.type_tokens and self.tokens[self.index+1].type == "TOKEN_ID":
+                arguments.append(self.current_token.type)
+                # if that the token following the COLON is a valis type decleration, store the type, else return an error
+                argument_types.append(self.tokens[self.index+1].value) if self.tokens[self.index+2].type in self.type_tokens else raise ParseError(f"Expected Type Decleration token, instead got: {self.tokens[self.index+2].type}")
+                self.next_token()
+                self.next_token()
+                self.check_token("COMMA") # make sure there is a comma separating the arguments
+    
             elif self.current_token.type == "TOKEN_ID":
                 arguments.append(self.current_token.type)
                 argument_types.append(None)
@@ -109,14 +143,12 @@ class Parser:
         self.check_token("RPAREN")
 
         # If there is a -> return type decleration, store it
-        if self.current_token.type == "RETURN_TYPE":
-            self.next_token()
-            if self.current_token.type in self.type_tokens:
-                return_type = self.current_token.value
-                self.next_token()
-                return FunctionDeclerationAST(name, arguments, argument_types, return_type)
-        return FunctionDeclerationAST(name, arguments, argument_types)
 
+        if self.current_token.type in self.type_tokens:
+            return_type = self.current_token.value
+            self.next_token()
+            return FunctionDeclerationAST(name, arguments, argument_types, return_type)
+        else: return FunctionDeclerationAST(name, arguments, argument_types)
 
     def func_call(self):
         name = self.check_token.value
@@ -134,12 +166,29 @@ class Parser:
         return FunctionCallAST(name, arguments)
            
 
-    def func_lookahead(self, index):
-        while self.tokens[index] != "RPAREN":
-            index+=1
-        if self.tokens[index+1] = "EQUAL":
-            return True
+    def check_if_func_decl(self, index):
+        # make sure that this is the beggining of a line
+        if self.tokens[index-1].type == "EOL" or self.tokens[index-1].type == "INDENT":
+            # if there is an EQUALS token after RPAREN it must be a declarative function decleration
+            while self.tokens[index].type != "RPAREN":
+                index+=1
+            if self.tokens[index+1].type == "EQUAL":
+                return True
+            # if there is a codeblock in the next line then it is an imperative function decleration
+            # because we made sure that the call is at the beggining of a line we know that it cannot be
+            # if fuction(x)
+            #   //code
+            while self.tokens[index].type != "EOL":
+                index+=1
+            if self.tokens[index+1].type == "INDENT":
+                return True
+            else return False
         else: return False
 
+    def primary(self):
+
+    def expression(self):
+        lhs = self.primary()
+        return self.binop_rhs(0, lhs)
 
 

@@ -29,22 +29,69 @@ muse is designed to be a python-esque language but fast and safe
 
 ```
 
-# 2 ways to declare variables
+// Each example will have a version with dynamic typing, and one without
 
-a = 20
 
-string hello = "Hello World"
 
-# example of a declarative single line function defenition with strong typing 
+// declaring variables
 
-f(x: int) = x^2 -> int
+x = 10
+y *float* = 2.0 // this can also be qritten as: *float* y = 0
 
-# example of an imerative function defenition
 
-even(array)
-    return [i for i in array if i%2==0]
 
-# function call
+// function defenition (declarative)
 
-res = f(a)
+f(x, y) = x + y
+
+f(x *int*, y *float*) *float* = x + y //variable name and type are interchangable
+
+
+// function defenition (imperative)
+
+// code blocks are handled entirely through indentation
+// I might make it possible to add an optional "def" keyword if it makes it faster   
+
+f(x, y)
+    return x + y
+
+f(x *int*, y *int*) *int*
+    return x + y
+
+
+
+
+// if elif else statement 
+
+if x > y
+    //code
+
+elif x < y
+    //code
+
+else //code
+
+// ternary operator
+
+ even(x *int*) *bool* = true if x >= 0 else false
+
+
+
+// for loop
+
+for i in iterable
+    print(i)
+
+// list comprehension
+
+cube(array) = [x^3 for x in array]
+
+
+// while loop
+
+while x < 20
+    x += 1
+
+
+
 ```
