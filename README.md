@@ -46,7 +46,7 @@ function defenitions:
 
 f(x, y) = x + y
 
-f(x int, y float) float = x + y    // argument name and type are interchangable
+f(x int, y float) float = x + y    // argument names and types are interchangable
 
 
 // imperative:
