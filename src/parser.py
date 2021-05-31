@@ -1,6 +1,15 @@
-from lexer import Lexer, 
+from lexer import Lexer
 
+class IdentifierAST:
+    def __init__(self, name):
+        self.name = name
         
+class VariableDeclerationAST:
+    def __init__(self, name, expression, var_type=None):
+        self.name = name
+        self.var_type = var_type
+        self.expression = expression
+
 class FunctionDeclerationAST:
     def __init__(self, name, arguments, argument_types, return_type=None):
         self.name = name
@@ -15,8 +24,11 @@ class FunctionDefenitionAST:
     # clas
 
 class FunctionCallAST:
+    def __init__(self, callee, arguments):
+        self.callee = callee
+        self.arguments = arguments
 
-class NUmberAST:
+class NumberAST:
     def __init__(self, value, val_type=None):
         self.value = value
         self.val_type = val_type
@@ -29,28 +41,9 @@ class VariableAST:
 class BinaryExpressionAST:
     def __init__(self, op, lhs, rhs):
         self.op = op
-        self. lhs = lhs
+        self.lhs = lhs
         self.rhs = rhs
 
-# function defenition (lambda)
-# | name(arguments) = expression 
-# 
-# strongly typed function defenition (lambda)
-# | name(arguments : type) = body -> type 
-#
-# function call
-# | name(arguments)
-# 
-# variable defenition
-# | name = expression
-# 
-# expression
-# 
-# 
-# 
-# 
-# 
-# 
 class Parser:
     def __init__(self, lexer):
         self.lexer = lexer
@@ -84,13 +77,14 @@ class Parser:
     "+=" : "INCREMENT",
     "-=" : "DECREMENT",
 }
-    }
 
     def parse(self):
         if current_token.type == "TOKEN_ID" and self.tokens[self.index+1].type == "LPAREN":
             if self.check_if_func_decl(self.index):
                 return self.func_def()
             else: return self.func_call()
+        elif self.check_if_var_def():
+            self.var_decl()
                
     def check_token(self, expected_type, expected_value=None):
         if self.current_token.type != token_type:
@@ -165,6 +159,22 @@ class Parser:
         self.check_token("RPAREN")
         return FunctionCallAST(name, arguments)
            
+    def val_decl(self):
+        if self.current_token.type in self.type_tokens:
+            var_type = self.current_token.value
+            self.next_token()
+            name = self.current_token.value
+            self.next_token()
+        else:
+            name = self.current_token.value
+            self.next_token()
+            if self.current_token.type in self.type_tokens:
+                var_type = self.current_token.value
+                self.next_token()
+        self.next_token()
+        expression = expression()
+
+        return VariableDeclerationAST(name, expression, var_type)
 
     def check_if_func_decl(self, index):
         # make sure that this is the beggining of a line
@@ -184,6 +194,19 @@ class Parser:
                 return True
             else return False
         else: return False
+
+    def check_if_var_def(self, index):
+        # int x = 0
+        if self.tokens[index].type == "TOKEN_ID" and self.tokens[index+1].type in self.type_tokens and self.tokens[index+2].type == "EQUALS":
+            return True
+        # x int = 0    
+        elif self.tokens[index].type in self.type_tokens and self.tokens[index+1].type == "TOKEN_ID" and self.tokens[index+2].type == "EQUALS":
+            return True
+        # x = 0
+        elif self.tokens[index].type == "TOKEN_ID" and self.tokens[index+1].type == "EQUALS":
+            return True
+        else: return False
+
 
     def primary(self):
 
