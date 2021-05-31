@@ -3,10 +3,10 @@
 
  name is subject to change
 
-muse is designed to be a python-esque language but fast and safe
+muse is designed to be a readable language that lets you write how you want to without compromising in speed and saftey
 
 ### Planned features:
-    - Static typing with the option to declare types for improved performance
+    - Dynamic typing with the option to declare types for improved performance
     - Simple, unintrusive and readable syntax
     - focus on a math-like declarative style, but with the option of also doing things the traditional, imerative way.
     - focus on immutable code
@@ -27,71 +27,68 @@ muse is designed to be a python-esque language but fast and safe
 
 ### Syntax examples
 
+
+Each example will have a version with dynamic typing, and one without
+
+
+
+declaring variables:
 ```
 
-// Each example will have a version with dynamic typing, and one without
-
-
-
-// declaring variables
-
 x = 10
-y *float* = 2.0 // this can also be qritten as: *float* y = 0
+y float = 2.0     // this can also be written as: float y = 0
 
+```
+function defenitions:
+```
 
-
-// function defenition (declarative)
+// declarative:
 
 f(x, y) = x + y
 
-f(x *int*, y *float*) *float* = x + y //variable name and type are interchangable
+f(x int, y float) float = x + y    // argument name and type are interchangable
 
 
-// function defenition (imperative)
+// imperative:
 
-// code blocks are handled entirely through indentation
-// I might make it possible to add an optional "def" keyword if it makes it faster   
-
-f(x, y)
+f(x, y)                       // code blocks are handled entirely through indentation
     return x + y
 
-f(x *int*, y *int*) *int*
+f(x int, y int) int         // I might make it possible to add an optional "def" keyword if it makes it faster   
     return x + y
 
-
-
-
-// if elif else statement 
+```
+if elif else statement:
+```
 
 if x > y
-    //code
+    largest = x
 
 elif x < y
-    //code
+    largest = y
 
-else //code
+else largest = none
 
-// ternary operator
+// ternary operator:
 
- even(x *int*) *bool* = true if x >= 0 else false
+even(x int) bool = true if x >= 0 else false
 
-
-
-// for loop
+```
+for loop:
+```
 
 for i in iterable
     print(i)
 
-// list comprehension
+// list comprehension:
 
 cube(array) = [x^3 for x in array]
 
-
-// while loop
+```
+while loop:
+```
 
 while x < 20
     x += 1
-
-
-
+    
 ```
