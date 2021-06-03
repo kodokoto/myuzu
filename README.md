@@ -19,6 +19,7 @@ muse is designed to be a readable language that lets you write how you want to w
 ### TODO:
     - Lexer (basic implementation is already done)
     - Parser [we are here]
+    - implement span for better compiler erros
     - Visitor
     - Semmantic analysis
       - Borrow checking
