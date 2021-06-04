@@ -6,20 +6,25 @@
 muse is designed to be a readable language that lets you write how you want to without compromising in speed and saftey
 
 ### Planned features:
-    - Dynamic typing with the option to declare types for improved performance
+    - Optional typing, declare types if you want preformance, else don't bother
     - Simple, unintrusive and readable syntax
     - focus on a math-like declarative style, but with the option of also doing things the traditional, imerative way.
-    - focus on immutable code
+    - All variables are immutable by default
     - Hybrid paradigm, supports both functional and OOP
-    - Safe memory management, no GC is palnned (something similar to rust)
+    - Safe memory management done before run-time, no GC is palnned (will probably implement something like rusts borrow checker)
     - runs on LLVM (maybe?)
     - Supports both JIT compilation and interpreting (working on compilation first)
-    - concurrency (something similar to go)
+    - concurrency (something similar to rust again, but with a syntax that is closer to go)
 
 ### TODO:
     - Lexer (basic implementation is already done)
     - Parser [we are here]
+    - implement span for better compiler erros
     - Visitor
+    - Semmantic analysis
+      - Borrow checking
+      - type checking
+      - lifetime checking
     - Integration with LLVM 
     - optimization
     - memory management
