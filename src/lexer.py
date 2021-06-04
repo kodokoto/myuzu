@@ -53,10 +53,11 @@ keywords = {
 } 
 
 class Token:
-    def __init__(self, type_, value, val_type=None):
+    def __init__(self, type_, value, line, column):
         self.type = type_
         self.value = value
-        self.val_type =val_type
+        self.line = line
+        self.column = column
 
     def __repr__(self) -> str:
         return f"\n{self.type}"
@@ -64,6 +65,8 @@ class Token:
 class Lexer:
     def __init__(self, content):
         self.content = content
+        self.lineno = 0
+        self.column = 1
         
 
     def init_lex(self):
@@ -78,10 +81,12 @@ class Lexer:
             tmp_tok, tmp_lvl  = self.tokenize(i, tmp_lvl)
             self.all_tokens.append(tmp_tok)
         return [item for sublist in self.all_tokens for item in sublist if item.type!="COMMENT"]
+
     def advance(self):
         if self.cursor < len(self.line)-1:
             self.cursor+=1
             self.charachter = self.line[self.cursor]
+            self.column += 1
         else: self.cursor+=1
 
     # def checkIndent(self):
@@ -93,7 +98,7 @@ class Lexer:
             self.advance()
         if value in keywords:
             return Token(keywords[value], value)
-        return Token("TOKEN_ID", value)   
+        return Token("TOKEN_ID", value, self.lineno, self.column)   
 
     def collect_number(self):
         value = ""
@@ -102,7 +107,7 @@ class Lexer:
             self.advance()
         if value[-1] == '.': a = a[:-1]
         value = float(value) if ('.' in value) else int(value)
-        return Token("NUMBER", value)
+        return Token("NUMBER", value, self.lineno, self.column)
 
     def collect_string(self):
         value = ''
@@ -114,9 +119,11 @@ class Lexer:
             else:
                 self.advance()
                 break
-        return Token("STRING", value)
+        return Token("STRING", value, self.lineno, self.column)
 
     def tokenize(self, line, level):
+        self.lineno += 1
+        self.column = 0
         self.line = line.replace('    ', '\t')
         self.cursor = 0
         self.charachter = self.line[self.cursor]
@@ -125,13 +132,13 @@ class Lexer:
         while self.cursor < len(self.line):
             # Token IDs & Keywords
             if self.charachter == '#':
-                return [Token("COMMENT", "useless")], level
+                return [Token("COMMENT", "useless", self.lineno, self.column)], level
             elif level<self.line.count('\t'):
-                self.tokens.append(Token("INDENT", '\t'))
+                self.tokens.append(Token("INDENT", '\t', self.lineno, self.column))
                 level += 1
                 self.advance()
             elif level>self.line.count('\t'):
-                self.tokens.append(Token("DEDENT", '\t'))
+                self.tokens.append(Token("DEDENT", '\t', self.lineno, self.column))
                 level-=1
                 self.advance()
             elif self.charachter.isalpha():
@@ -152,7 +159,7 @@ class Lexer:
                 self.tokens.append(Token(single_operators[self.charachter], self.charachter))
                 self.advance()
             else: self.advance()
-        self.tokens.append(Token("EOL", ""))
+        self.tokens.append(Token("EOL", "", self.lineno, self.column))
         return self.tokens, level
     
 

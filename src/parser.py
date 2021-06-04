@@ -1,14 +1,34 @@
 from lexer import Lexer
+class LineColumn:
+    def __init__(self, line, column):
+        self.line = line
+        self.column = column
+
+class Span():
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
 
 class IdentifierAST:
-    def __init__(self, name):
+    def __init__(self, name, span):
         self.name = name
+        self.span = span
         
-class VariableDeclerationAST:
+class AssignmentExpressionAST:
     def __init__(self, name, expression, var_type=None):
         self.name = name
         self.var_type = var_type
         self.expression = expression
+
+class BlockAST:
+    def __init__(self, statements, span):
+        self.statements = statements
+        self.span = span
+
+class StatementAST:
+    def __init__(self, expression, span):
+        self.expression = expression
+        self.span = span
 
 class FunctionDeclerationAST:
     def __init__(self, name, arguments, argument_types, return_type=None):
@@ -17,13 +37,13 @@ class FunctionDeclerationAST:
         self.argument_types = argument_types
         self.return_type = return_type
 
-class FunctionDefenitionAST:
-    def __init__(self, decleration, body):
-        self.decleration = decleration 
+class FunctionAST:
+    def __init__(self, signature, body, span):
+        self.signature = signature 
         self.body = body
-    # clas
+        self.span = span
 
-class FunctionCallAST:
+class CallExpressionAST:
     def __init__(self, callee, arguments):
         self.callee = callee
         self.arguments = arguments
@@ -31,11 +51,6 @@ class FunctionCallAST:
 class NumberAST:
     def __init__(self, value, val_type=None):
         self.value = value
-        self.val_type = val_type
-
-class VariableAST:
-    def __init__(self, name, val_type=None):
-        self.name = name
         self.val_type = val_type
 
 class BinaryExpressionAST:
@@ -80,7 +95,7 @@ class Parser:
 
     def parse(self):
         if current_token.type == "TOKEN_ID" and self.tokens[self.index+1].type == "LPAREN":
-            if self.check_if_func_decl(self.index):
+            if self.check_if_func_signature(self.index):
                 return self.func_def()
             else: return self.func_call()
         elif self.check_if_var_def():
@@ -96,11 +111,11 @@ class Parser:
         self.current_token = self.tokens[index]
 
     def func_def(self):
-        decleration = self.func_decl()
+        decleration = self.func_signature()
         body = self._parse_expression()
-        return FunctionDefenitionAST(decleration, body)
+        return FunctionAST(decleration, body)
 
-    def func_decl(self):
+    def func_signature(self):
         # store name, arguments, argument_types and an optional return type
         name = self.check_token.value
         self.check_token("TOKEN_ID")
@@ -157,7 +172,7 @@ class Parser:
                 self.check_token("COMMA")
             else: raise ParseError(f"Unexpected token: {self.current_token.type}")
         self.check_token("RPAREN")
-        return FunctionCallAST(name, arguments)
+        return CallExpressionAST(name, arguments)
            
     def val_decl(self):
         if self.current_token.type in self.type_tokens:
@@ -174,9 +189,9 @@ class Parser:
         self.next_token()
         expression = expression()
 
-        return VariableDeclerationAST(name, expression, var_type)
+        return AssignmentExpressionAST(name, expression, var_type)
 
-    def check_if_func_decl(self, index):
+    def check_if_func_signature(self, index):
         # make sure that this is the beggining of a line
         if self.tokens[index-1].type == "EOL" or self.tokens[index-1].type == "INDENT":
             # if there is an EQUALS token after RPAREN it must be a declarative function decleration
