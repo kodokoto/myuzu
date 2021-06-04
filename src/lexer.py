@@ -105,7 +105,7 @@ class Lexer:
         while self.cursor <= len(self.line) and (self.charachter.isnumeric() or self.charachter == '.'):
             value+=self.charachter
             self.advance()
-        if value[-1] == '.': a = a[:-1]
+        if value[-1] == '.': value = value[:-1]
         value = float(value) if ('.' in value) else int(value)
         return Token("NUMBER", value, self.lineno, self.column)
 
