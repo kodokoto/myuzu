@@ -53,14 +53,19 @@ keywords = {
 } 
 
 class Token:
-    def __init__(self, type_, value, line, column):
+    def __init__(self, type_, value, pointer):
         self.type = type_
         self.value = value
-        self.line = line
-        self.column = column
+        self.pointer = pointer
 
     def __repr__(self) -> str:
         return f"\n{self.type}"
+
+class LineColumn:
+    def __init__(self, line, column):
+        self.line = line
+        self.column = column
+
 
 class Lexer:
     def __init__(self, content):
@@ -98,7 +103,7 @@ class Lexer:
             self.advance()
         if value in keywords:
             return Token(keywords[value], value)
-        return Token("TOKEN_ID", value, self.lineno, self.column)   
+        return Token("TOKEN_ID", value, LineColumn(self.lineno, self.column))   
 
     def collect_number(self):
         value = ""
@@ -107,7 +112,7 @@ class Lexer:
             self.advance()
         if value[-1] == '.': value = value[:-1]
         value = float(value) if ('.' in value) else int(value)
-        return Token("NUMBER", value, self.lineno, self.column)
+        return Token("NUMBER", value, LineColumn(self.lineno, self.column))
 
     def collect_string(self):
         value = ''
@@ -119,7 +124,7 @@ class Lexer:
             else:
                 self.advance()
                 break
-        return Token("STRING", value, self.lineno, self.column)
+        return Token("STRING", value, LineColumn(self.lineno, self.column))
 
     def tokenize(self, line, level):
         self.lineno += 1
@@ -128,39 +133,40 @@ class Lexer:
         self.cursor = 0
         self.charachter = self.line[self.cursor]
         self.level = level
-        self.tokens = []
+        tokens = []
         while self.cursor < len(self.line):
+            # self.startCol = self.column
             # Token IDs & Keywords
             if self.charachter == '#':
-                return [Token("COMMENT", "useless", self.lineno, self.column)], level
+                return [Token("COMMENT", "useless", LineColumn(self.lineno, self.column))], level
             elif level<self.line.count('\t'):
-                self.tokens.append(Token("INDENT", '\t', self.lineno, self.column))
+                tokens.append(Token("INDENT", '\t', LineColumn(self.lineno, self.column)))
                 level += 1
                 self.advance()
             elif level>self.line.count('\t'):
-                self.tokens.append(Token("DEDENT", '\t', self.lineno, self.column))
+                tokens.append(Token("DEDENT", '\t', LineColumn(self.lineno, self.column)))
                 level-=1
                 self.advance()
             elif self.charachter.isalpha():
-                self.tokens.append(self.collect_id())
+                tokens.append(self.collect_id())
             # Numbers
             elif self.charachter.isnumeric():
-                self.tokens.append(self.collect_number())
+                tokens.append(self.collect_number())
             # Double Operators
             elif self.charachter == '"':
-                self.tokens.append(self.collect_string())
+                tokens.append(self.collect_string())
 
             elif self.line[self.cursor:self.cursor+2] in double_operators:
-                self.tokens.append(Token(double_operators[self.line[self.cursor:self.cursor+2]], self.line[self.cursor:self.cursor+2]))
+                tokens.append(Token(double_operators[self.line[self.cursor:self.cursor+2]], self.line[self.cursor:self.cursor+2]))
                 self.advance()
                 self.advance()
             # Single Operators
             elif self.charachter in single_operators:
-                self.tokens.append(Token(single_operators[self.charachter], self.charachter))
+                tokens.append(Token(single_operators[self.charachter], self.charachter))
                 self.advance()
             else: self.advance()
-        self.tokens.append(Token("EOL", "", self.lineno, self.column))
-        return self.tokens, level
+        tokens.append(Token("EOL", "", LineColumn(self.lineno, self.column)))
+        return tokens, level
     
 
 
