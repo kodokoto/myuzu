@@ -18,10 +18,10 @@ muse is designed to be a readable language that lets you write how you want to w
 
 ### TODO:
     - Lexer (basic implementation is already done)
-    - Parser [we are here]
+    - Parser
     - implement span for better compiler erros
     - Visitor
-    - Semmantic analysis
+    - Semmantic analysis [i am here]
       - Borrow checking
       - type checking
       - lifetime checking
