@@ -1,7 +1,7 @@
 # myuzu
  my own language [WIP]
 
-*I am currently rewriting this in C as I found that using python with llvmlite codegen was too much of a hinderance, I will make that public when I have at working version up and running. Meanwhile I will leave my spaghetti python code up on github.
+*I am currently rewriting this in C as I found that using python with llvmlite codegen was too much of a hinderance, I will make that public when I have at working version up and running. Meanwhile I will leave my spaghetti python code up on github.*
 
 muse is designed to be a readable language that lets you write how you want to without compromising in speed and saftey*
 
@@ -17,7 +17,7 @@ muse is designed to be a readable language that lets you write how you want to w
     - concurrency (something similar to rust again, but with a syntax that is closer to go)
 
 ### TODO:
-    - Lexer (basic implementation is already done)
+    - Lexer
     - Parser
     - implement span for better compiler erros
     - Visitor
