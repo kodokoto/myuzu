@@ -1,0 +1,23 @@
+Span -> Point start, Point end
+Point -> int line, int column
+
+term -> number | identifier | function_call
+
+expression -> term operator term | expression
+
+type -> int_decl | str_decl | bool_decl | float_decl
+
+parameter -> identifier | identifier type
+
+argument -> (identifier | number | string)
+
+function_signature -> identifier lparen (parameter | some(parameter comma)) parameter rparen
+
+function_decleration ->  (equals expression) | block
+
+function_call -> function_signature and not function_declaration
+
+block -> indent some(statement) dedent
+
+statement -> variable_declaration | 
+

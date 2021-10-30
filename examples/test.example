@@ -1,8 +1,10 @@
-int x = 10
-int y = 20
+add(x int, y int) int = x + y
 
-string hello = "Hello World"
+add(x int, y int) int
+    result = x + y
+    return result
 
-function(x: int, y: int) = (x^2) + y*(3-1) -> int
+aadd(x, y) = x + y
 
-print(function(x, y))
+add(x, y)
+    return x + y
