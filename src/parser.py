@@ -27,16 +27,18 @@
 #           | <bool> 
 
 # <assignment> := <type_token> <identifier> "=" (<expression> | <simple_stmt>)
+
 from lexer import Lexer, Token
 import json
 from json import JSONEncoder
 
 class EmployeeEncoder(JSONEncoder):
         def default(self, o):
-            return o.__dict__
+            return {o.__class__.__name__: o.__dict__}
 
 class ParseError(Exception): pass
 
+# span class holds the start and end point of each AST node
 class Span:
     def __init__(self, start, end=None):
         self.start = start
@@ -82,14 +84,12 @@ class BinaryExpression:
         self.rhs = rhs
         # self.span = span
 
-# <function_declaration> := <funtcion_protopype> <body>
 class FunctionDefenition:
     def __init__(self, span, proto, body):
         self.prototype = proto
         self.body = body
         self.span = span
 
-# <function_prototype> := <identifier> "(" <signature>+ ")" "->" <return_type>
 class FunctionPrototype:
     def __init__(self, span, name, parameters, return_type=None):
         self.name = name
@@ -112,7 +112,6 @@ class StatementBlock:
 
 class Statement:
     def __init__(self, span, statement):
-        # can be expression, function call, if statement
         self.statement = statement
         self.span = span
 
@@ -214,15 +213,12 @@ class Parser:
                 self.current_token = self.tokens[self.index]
 
     def check_if_function_prototype(self, index):
-        print("Check if function", self.current_token.value )
 
         # make sure that this is the beggining of a line
         try:
             last_token = self.tokens[index-1].type
         except IndexError: last_token = None
-        print(last_token)
-        if last_token == "EOL" or last_token == "DEDENT" or last_token == None:
-            print(1)
+        if last_token == "EOL" or last_token == "DEDENT" or last_token == None or last_token == "EOF":
             # if there is an EQUALS token after RPAREN it must be a declarative function decleration
             while True:
                 if self.tokens[index].type == "RPAREN":
@@ -230,7 +226,6 @@ class Parser:
                 index+=1
             if (self.tokens[index+1].type == "EQUALS" or
                 self.tokens[index+1].type in self.type_tokens):
-                print("fouund function")
                 return True
             # if there is a codeblock in the next line then it is an imperative function decleration
             # because we made sure that the call is at the beggining of a line we know that it cannot be
@@ -248,13 +243,16 @@ class Parser:
     def parse_program(self):
         return Program(self.parse_statements())
     
+    # block := INDENT <statements> (EOF | DEDENT)
     def parse_block(self):
         span_start = self.current_token.pointer
         self.eat_token("INDENT")
         statements = self.parse_statements("DEDENT")
-        self.eat_token("DEDENT")
+        if self.current_token.type!="EOF":
+            self.eat_token("DEDENT") 
         return StatementBlock(Span(span_start, self.current_token.pointer), statements)
 
+    # statements := <statement>+
     def parse_statements(self, end_token=None):
         span_start = self.current_token.pointer
         statements = []
@@ -262,6 +260,13 @@ class Parser:
             statements.append(self.parse_statement())
         return statements
 
+    # <statement> :=  <function_defenition>
+    #               | <assignment_statement>
+    #               | <return_statement>
+    #               | <if_else_statement> 
+    #               | <for_loop> 
+    #               | <while_loop>
+    #               | <expression>
     def parse_statement(self):
         if self.current_token.type=="TOKEN_ID" and self.check_if_function_prototype(self.index):
             return self.parse_function_defenition()
@@ -271,9 +276,9 @@ class Parser:
             return self.parse_return_statement()
         else: self.parse_expression()
 
+    # <assignment statement> := TOKEN_ID <type_declaration>? EQUALS <expression>
     def parse_assignment_statement(self):
         span_start = self.current_token.pointer
-
         name = self.current_token.value
         self.next_token()
         if self.current_token.type == "EQUALS":
@@ -290,6 +295,7 @@ class Parser:
             self.eat_token("EOL")
             return assignment
 
+    # <return_statement> := RETURN <expression>
     def parse_return_statement(self):
         span_start = self.current_token.pointer
         self.next_token()
@@ -300,6 +306,7 @@ class Parser:
 
 #   Function Defenition
 
+#   <function_defenition> := <funtcion_protopype> <body>
     def parse_function_defenition(self):
         span_start = self.current_token.pointer
         prototype = self.parse_function_prototype()
@@ -313,6 +320,7 @@ class Parser:
         else: raise ParseError(f"Expected indent or '=', instead of {self.current_token.value} at: {self.current_token.pointer}")
         return FunctionDefenition(Span(span_start, self.current_token.pointer), prototype, body)
 
+    # <function_prototype> := TOKEN_ID "(" <signature>+ ")" <return_type>?
     def parse_function_prototype(self):
         # store name, arguments, argument_types and the start of the signature
         span_start = self.current_token.pointer
@@ -352,13 +360,19 @@ class Parser:
 
 # Expressions
 
-    # expression :=
+    # <expression> := <expression> <operator> <expression>
+    #               | TOKEN_ID
+    #               | <literal>
+    #               | <function_call>
+    #               | <ternary_operator>
+    #               | <list_comprehension>
+    
     def parse_expression(self):
         lhs = self.parse_unary()
         return self.parse_binexp_rhs(0, lhs)
 
     def parse_unary(self):
-        # if self.current_token.type in self.unary_op:
+        # if self.current_token.type in self.unary_op: # this is for implementing unary operators later
         return self.parse_primary()
 
     def parse_primary(self):
@@ -410,36 +424,19 @@ class Parser:
             return -1
 
     def parse_binexp_rhs(self, precedence, lhs):
-        # print("binop")
         while True:
             current_precedence = self.check_precedence()
-            # print("current prec" ,current_precedence)
-            # handles non operators
             if current_precedence < precedence:
-                # print("exit")
                 return lhs
             op = self.current_token.value
-            # print("op", op)
             self.next_token()
             rhs = self.parse_unary()
-            # print("lhs", lhs.id)
-            # print("rhs", rhs.id)
             next_precedence = self.check_precedence()
-            # print("next precedence", next_precedence)
             if current_precedence < next_precedence:
                 rhs = self.parse_binexp_rhs(current_precedence + 1, rhs)
-
             lhs = BinaryExpression(op, lhs, rhs)
     
     
 
     
-
-# testBinExp = BinaryExpression('+', 'x', 'y')
-# param1 = Parameter(1, "x", "int")
-# param2 = Parameter(1, "y", "int")
-# testFuncProto = FunctionPrototype(1, "add", [param1, param2], "int")
-# testFuncDef = FunctionDefenition(1, testFuncProto, testBinExp)
-
-# print(json.dumps(testFuncDef, indent=4, cls=EmployeeEncoder))
 

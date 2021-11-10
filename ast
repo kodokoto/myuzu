@@ -1,0 +1,638 @@
+{
+    "Program": {
+        "block": [
+            {
+                "FunctionDefenition": {
+                    "prototype": {
+                        "FunctionPrototype": {
+                            "name": [
+                                {
+                                    "Parameter": {
+                                        "id": {
+                                            "Identifier": {
+                                                "id": "x",
+                                                "span": {
+                                                    "LineColumn": {
+                                                        "line": 1,
+                                                        "column": 5
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "type": "INT_DECL",
+                                        "span": {
+                                            "Span": {
+                                                "start": {
+                                                    "LineColumn": {
+                                                        "line": 1,
+                                                        "column": 5
+                                                    }
+                                                },
+                                                "end": {
+                                                    "LineColumn": {
+                                                        "line": 1,
+                                                        "column": 9
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "Parameter": {
+                                        "id": {
+                                            "Identifier": {
+                                                "id": "y",
+                                                "span": {
+                                                    "LineColumn": {
+                                                        "line": 1,
+                                                        "column": 12
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "type": "INT_DECL",
+                                        "span": {
+                                            "Span": {
+                                                "start": {
+                                                    "LineColumn": {
+                                                        "line": 1,
+                                                        "column": 12
+                                                    }
+                                                },
+                                                "end": {
+                                                    "LineColumn": {
+                                                        "line": 1,
+                                                        "column": 16
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ],
+                            "parameters": {
+                                "Span": {
+                                    "start": {
+                                        "LineColumn": {
+                                            "line": 1,
+                                            "column": 3
+                                        }
+                                    },
+                                    "end": {
+                                        "LineColumn": {
+                                            "line": 1,
+                                            "column": 21
+                                        }
+                                    }
+                                }
+                            },
+                            "return_type": "int",
+                            "span": "add"
+                        }
+                    },
+                    "body": {
+                        "BinaryExpression": {
+                            "op": "+",
+                            "lhs": {
+                                "Identifier": {
+                                    "id": "x",
+                                    "span": {
+                                        "Span": {
+                                            "start": {
+                                                "LineColumn": {
+                                                    "line": 1,
+                                                    "column": 25
+                                                }
+                                            },
+                                            "end": null
+                                        }
+                                    }
+                                }
+                            },
+                            "rhs": {
+                                "Identifier": {
+                                    "id": "y",
+                                    "span": {
+                                        "Span": {
+                                            "start": {
+                                                "LineColumn": {
+                                                    "line": 1,
+                                                    "column": 28
+                                                }
+                                            },
+                                            "end": null
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "span": {
+                        "Span": {
+                            "start": {
+                                "LineColumn": {
+                                    "line": 1,
+                                    "column": 3
+                                }
+                            },
+                            "end": {
+                                "LineColumn": {
+                                    "line": 2,
+                                    "column": 3
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "FunctionDefenition": {
+                    "prototype": {
+                        "FunctionPrototype": {
+                            "name": [
+                                {
+                                    "Parameter": {
+                                        "id": {
+                                            "Identifier": {
+                                                "id": "x",
+                                                "span": {
+                                                    "LineColumn": {
+                                                        "line": 2,
+                                                        "column": 5
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "type": "INT_DECL",
+                                        "span": {
+                                            "Span": {
+                                                "start": {
+                                                    "LineColumn": {
+                                                        "line": 2,
+                                                        "column": 5
+                                                    }
+                                                },
+                                                "end": {
+                                                    "LineColumn": {
+                                                        "line": 2,
+                                                        "column": 9
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "Parameter": {
+                                        "id": {
+                                            "Identifier": {
+                                                "id": "y",
+                                                "span": {
+                                                    "LineColumn": {
+                                                        "line": 2,
+                                                        "column": 12
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "type": "INT_DECL",
+                                        "span": {
+                                            "Span": {
+                                                "start": {
+                                                    "LineColumn": {
+                                                        "line": 2,
+                                                        "column": 12
+                                                    }
+                                                },
+                                                "end": {
+                                                    "LineColumn": {
+                                                        "line": 2,
+                                                        "column": 16
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ],
+                            "parameters": {
+                                "Span": {
+                                    "start": {
+                                        "LineColumn": {
+                                            "line": 2,
+                                            "column": 3
+                                        }
+                                    },
+                                    "end": {
+                                        "LineColumn": {
+                                            "line": 2,
+                                            "column": 20
+                                        }
+                                    }
+                                }
+                            },
+                            "return_type": "int",
+                            "span": "add"
+                        }
+                    },
+                    "body": {
+                        "StatementBlock": {
+                            "statements": [
+                                {
+                                    "AssignmentStatement": {
+                                        "name": "result",
+                                        "expression": {
+                                            "BinaryExpression": {
+                                                "op": "+",
+                                                "lhs": {
+                                                    "Identifier": {
+                                                        "id": "x",
+                                                        "span": {
+                                                            "Span": {
+                                                                "start": {
+                                                                    "LineColumn": {
+                                                                        "line": 3,
+                                                                        "column": 11
+                                                                    }
+                                                                },
+                                                                "end": null
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "rhs": {
+                                                    "Identifier": {
+                                                        "id": "y",
+                                                        "span": {
+                                                            "Span": {
+                                                                "start": {
+                                                                    "LineColumn": {
+                                                                        "line": 3,
+                                                                        "column": 14
+                                                                    }
+                                                                },
+                                                                "end": null
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "variable_type": null,
+                                        "span": {
+                                            "Span": {
+                                                "start": {
+                                                    "LineColumn": {
+                                                        "line": 3,
+                                                        "column": 7
+                                                    }
+                                                },
+                                                "end": {
+                                                    "LineColumn": {
+                                                        "line": 3,
+                                                        "column": 14
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "ReturnStatement": {
+                                        "expression": {
+                                            "Identifier": {
+                                                "id": "result",
+                                                "span": {
+                                                    "Span": {
+                                                        "start": {
+                                                            "LineColumn": {
+                                                                "line": 4,
+                                                                "column": 13
+                                                            }
+                                                        },
+                                                        "end": null
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "span": {
+                                            "Span": {
+                                                "start": {
+                                                    "LineColumn": {
+                                                        "line": 4,
+                                                        "column": 7
+                                                    }
+                                                },
+                                                "end": {
+                                                    "LineColumn": {
+                                                        "line": 4,
+                                                        "column": 13
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ],
+                            "span": {
+                                "Span": {
+                                    "start": {
+                                        "LineColumn": {
+                                            "line": 3,
+                                            "column": 0
+                                        }
+                                    },
+                                    "end": {
+                                        "LineColumn": {
+                                            "line": 5,
+                                            "column": 4
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "span": {
+                        "Span": {
+                            "start": {
+                                "LineColumn": {
+                                    "line": 2,
+                                    "column": 3
+                                }
+                            },
+                            "end": {
+                                "LineColumn": {
+                                    "line": 5,
+                                    "column": 4
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "FunctionDefenition": {
+                    "prototype": {
+                        "FunctionPrototype": {
+                            "name": [
+                                {
+                                    "Parameter": {
+                                        "id": "x",
+                                        "type": null,
+                                        "span": {
+                                            "Span": {
+                                                "start": {
+                                                    "LineColumn": {
+                                                        "line": 5,
+                                                        "column": 6
+                                                    }
+                                                },
+                                                "end": null
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "Parameter": {
+                                        "id": "y",
+                                        "type": null,
+                                        "span": {
+                                            "Span": {
+                                                "start": {
+                                                    "LineColumn": {
+                                                        "line": 5,
+                                                        "column": 9
+                                                    }
+                                                },
+                                                "end": null
+                                            }
+                                        }
+                                    }
+                                }
+                            ],
+                            "parameters": {
+                                "Span": {
+                                    "start": {
+                                        "LineColumn": {
+                                            "line": 5,
+                                            "column": 4
+                                        }
+                                    },
+                                    "end": {
+                                        "LineColumn": {
+                                            "line": 5,
+                                            "column": 11
+                                        }
+                                    }
+                                }
+                            },
+                            "return_type": null,
+                            "span": "add"
+                        }
+                    },
+                    "body": {
+                        "BinaryExpression": {
+                            "op": "+",
+                            "lhs": {
+                                "Identifier": {
+                                    "id": "x",
+                                    "span": {
+                                        "Span": {
+                                            "start": {
+                                                "LineColumn": {
+                                                    "line": 5,
+                                                    "column": 14
+                                                }
+                                            },
+                                            "end": null
+                                        }
+                                    }
+                                }
+                            },
+                            "rhs": {
+                                "Identifier": {
+                                    "id": "y",
+                                    "span": {
+                                        "Span": {
+                                            "start": {
+                                                "LineColumn": {
+                                                    "line": 5,
+                                                    "column": 17
+                                                }
+                                            },
+                                            "end": null
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "span": {
+                        "Span": {
+                            "start": {
+                                "LineColumn": {
+                                    "line": 5,
+                                    "column": 4
+                                }
+                            },
+                            "end": {
+                                "LineColumn": {
+                                    "line": 6,
+                                    "column": 3
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "FunctionDefenition": {
+                    "prototype": {
+                        "FunctionPrototype": {
+                            "name": [
+                                {
+                                    "Parameter": {
+                                        "id": "x",
+                                        "type": null,
+                                        "span": {
+                                            "Span": {
+                                                "start": {
+                                                    "LineColumn": {
+                                                        "line": 6,
+                                                        "column": 5
+                                                    }
+                                                },
+                                                "end": null
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "Parameter": {
+                                        "id": "y",
+                                        "type": null,
+                                        "span": {
+                                            "Span": {
+                                                "start": {
+                                                    "LineColumn": {
+                                                        "line": 6,
+                                                        "column": 8
+                                                    }
+                                                },
+                                                "end": null
+                                            }
+                                        }
+                                    }
+                                }
+                            ],
+                            "parameters": {
+                                "Span": {
+                                    "start": {
+                                        "LineColumn": {
+                                            "line": 6,
+                                            "column": 3
+                                        }
+                                    },
+                                    "end": {
+                                        "LineColumn": {
+                                            "line": 6,
+                                            "column": 8
+                                        }
+                                    }
+                                }
+                            },
+                            "return_type": null,
+                            "span": "add"
+                        }
+                    },
+                    "body": {
+                        "StatementBlock": {
+                            "statements": [
+                                {
+                                    "ReturnStatement": {
+                                        "expression": {
+                                            "BinaryExpression": {
+                                                "op": "+",
+                                                "lhs": {
+                                                    "Identifier": {
+                                                        "id": "x",
+                                                        "span": {
+                                                            "Span": {
+                                                                "start": {
+                                                                    "LineColumn": {
+                                                                        "line": 7,
+                                                                        "column": 9
+                                                                    }
+                                                                },
+                                                                "end": null
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "rhs": {
+                                                    "Identifier": {
+                                                        "id": "y",
+                                                        "span": {
+                                                            "Span": {
+                                                                "start": {
+                                                                    "LineColumn": {
+                                                                        "line": 7,
+                                                                        "column": 12
+                                                                    }
+                                                                },
+                                                                "end": null
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "span": {
+                                            "Span": {
+                                                "start": {
+                                                    "LineColumn": {
+                                                        "line": 7,
+                                                        "column": 7
+                                                    }
+                                                },
+                                                "end": {
+                                                    "LineColumn": {
+                                                        "line": 7,
+                                                        "column": 12
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ],
+                            "span": {
+                                "Span": {
+                                    "start": {
+                                        "LineColumn": {
+                                            "line": 7,
+                                            "column": 0
+                                        }
+                                    },
+                                    "end": null
+                                }
+                            }
+                        }
+                    },
+                    "span": {
+                        "Span": {
+                            "start": {
+                                "LineColumn": {
+                                    "line": 6,
+                                    "column": 3
+                                }
+                            },
+                            "end": null
+                        }
+                    }
+                }
+            }
+        ]
+    }
+}

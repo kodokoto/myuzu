@@ -1,4 +1,3 @@
-example = 'function(name : string multiplier : x) = true if string == "Hello" else false -> bool'
 
 # Dictionary containing all single operators
 single_operators = {
@@ -56,7 +55,7 @@ keywords = {
 
 # Token Object holds the Token type (i.e MODULO), value (i.e %) and pointer (LineColumn object)
 class Token:
-    def __init__(self, type_, value, pointer=0):
+    def __init__(self, type_, value, pointer=None):
         self.type = type_
         self.value = value
         self.pointer = pointer
@@ -148,7 +147,6 @@ class Lexer:
         self.level = level
         tokens = []
         while self.cursor < len(self.line):
-            # self.startCol = self.column
             # Token IDs & Keywords
             if self.charachter == '#':
                 return [Token("COMMENT", "useless", LineColumn(self.lineno, self.column))], level

@@ -1,2 +1,8 @@
 test/
 old/
+C_parser/
+Cpp_parser/
+functional_parser/
+larkParser/
+new_parser/ 
+src/llvmCodeGen.py

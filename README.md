@@ -1,31 +1,30 @@
-# muse
+# myuzu
  my own language [WIP]
 
  name is subject to change
 
-muse is designed to be a readable language that lets you write how you want to without compromising in speed and saftey
+myuzu is designed to be a readable language that lets you write how you want to without compromising in speed and saftey
 
 ### Planned features:
-    - Optional typing, declare types if you want preformance, else don't bother
+    - Optional typing through the use of type inference and multiple dispatch before runtime
     - Simple, unintrusive and readable syntax
     - focus on a math-like declarative style, but with the option of also doing things the traditional, imerative way.
     - All variables are immutable by default
+    - Only one "owner" of a value at a time
     - Hybrid paradigm, supports both functional and OOP
-    - Safe memory management done before run-time, no GC is palnned (will probably implement something like rusts borrow checker)
-    - runs on LLVM (maybe?)
+    - Safe memory management done before run-time, no GC (will probably implement something like rusts borrow checker)
+    - uses LLVM and MLIR
     - Supports both JIT compilation and interpreting (working on compilation first)
     - concurrency (something similar to rust again, but with a syntax that is closer to go)
 
 ### TODO:
-    - Lexer (basic implementation is already done)
-    - Parser [we are here]
-    - implement span for better compiler erros
-    - Visitor
+    - Lexer [re-writing in C++]
+    - Parser [re-writing in C++]
     - Semmantic analysis
-      - Borrow checking
-      - type checking
+      - Borrow checking 
+      - type checking [WIP in python]
       - lifetime checking
-    - Integration with LLVM 
+    - Integration with LLVM [WIP in python]
     - optimization
     - memory management
     - standard library
@@ -35,15 +34,19 @@ muse is designed to be a readable language that lets you write how you want to w
 
 Each example will have a version with dynamic typing, and one without
 
-
-
 declaring variables:
 ```
 
-x = 10
-y float = 2.0     // this can also be written as: float y = 0
+x = "Foo"
+y float = 2.0
+
+// there can only be one owner of a place in memory at any moment (like rust)
+
+a = x           // this clones "Fitz", a is now equal to "Fitz"
+x := "Bar"      // := is the reassignment operator, in this situation the variable x drops ownership of "Foo" and becomes the owner of "Bar"
 
 ```
+
 function defenitions:
 ```
 
@@ -51,7 +54,7 @@ function defenitions:
 
 f(x, y) = x + y
 
-f(x int, y float) float = x + y    // argument names and types are interchangable
+f(x int, y float) float = x + y   
 
 
 // imperative:
@@ -59,10 +62,13 @@ f(x int, y float) float = x + y    // argument names and types are interchangabl
 f(x, y)                       // code blocks are handled entirely through indentation
     return x + y
 
-f(x int, y int) int         // I might make it possible to add an optional "def" keyword if it makes it faster   
+f(x int, y int) int         
     return x + y
 
 ```
+
+
+
 if elif else statement:
 ```
 
